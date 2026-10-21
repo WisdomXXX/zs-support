@@ -37,10 +37,11 @@ def main():
             destination.chmod(0o644 if template.name == "control" else 0o755)
         doc = stage / "usr/share/doc/zephyr-zs-support"
         doc.mkdir(parents=True)
-        for name in ("README.md", "CHANGELOG.md", "开发计划.md"):
+        for name in ("README.md",):
             if (ROOT / name).exists():
                 shutil.copyfile(ROOT / name, doc / name)
-        shutil.copytree(ROOT / "docs", doc / "docs")
+        (doc / "docs").mkdir()
+        shutil.copyfile(ROOT / "docs/配置说明.md", doc / "docs/配置说明.md")
         artifact = dist / f"zephyr-zs-support_{version}_all.deb"
         subprocess.run(["dpkg-deb", "--root-owner-group", "--build", str(stage), str(artifact)], check=True)
         print(artifact)

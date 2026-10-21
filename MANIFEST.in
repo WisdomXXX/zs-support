@@ -1,4 +1,7 @@
 include VERSION
 include README.md
-include CHANGELOG.md
+include docs/配置说明.md
+include scripts/build_deb.py
+include scripts/verify_package.py
+recursive-include packaging/debian *
 recursive-include src/zs_support/resources *.json VERSION bash zsh

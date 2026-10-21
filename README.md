@@ -2,7 +2,7 @@
 
 智身科技售后运维采集工具，统一连接 ZSL-1/1W、ZSL2、ZSM1，远程录制 ROS 2 Bag，采集 Bag、日志和地图。
 
-当前版本 **0.3.1**：已在 M1 本体 0.3.3 / NX Hermes_M_v0.3.1 真机修复并测试连接、日志采集、场景录包和拉取。本版统一无参数入口和帮助、精简拉取结果、固定从算力板取地图，并同步 Add_data 的新增话题。证据见 [当前问题修复验收](docs/当前问题修复验收-2026-10-21.md)、[交互与停止验收记录](docs/交互与停止验收记录-2026-10-21.md) 和 [M1 实机验收记录](docs/M1实机验收记录-2026-10-21.md)。其他机型与 Windows GUI 的验收仍按开发计划推进。
+当前版本 **0.3.1**，提供 Ubuntu 命令行工具，支持设备连接、版本识别、场景录包以及 Bag、日志和地图采集。
 
 ## 安装
 
@@ -87,7 +87,7 @@ zs-support stop --session <完整会话ID> --json
 zs-support pull --session <完整会话ID> --hash --json
 ```
 
-`--scene` 可重复或逗号分隔；场景按原产品文件加载，不将小狗建图/感知合组拆分。`--topic`、`--exclude-topic` 用于增减话题。Topic 配置以 `Add_data/topics` 为当前来源，M1 导航 183、建图 18、定位 18 个配置话题。显示的是该产品配置与当前连接版本下的场景、类型库可加载的话题数及待发布数量；未发布的话题可以随后出现。已发现但当前环境缺少消息类型库的话题会明确列出，场景录制时跳过（例如这台 NX 的 `/nav_lite/start_cmd`）；显式 `--topic` 指定不可用类型时返回错误。录制默认智航版使用 compute、标准版使用 body，`--board` 可覆盖。
+`--scene` 可重复或逗号分隔；场景按原产品文件加载，不将小狗建图/感知合组拆分。`--topic`、`--exclude-topic` 用于增减话题。Topic 配置随程序发布，位于 `src/zs_support/resources/topics/`，M1 导航 183、建图 18、定位 18 个配置话题。显示的是该产品配置与当前连接版本下的场景、类型库可加载的话题数及待发布数量；未发布的话题可以随后出现。已发现但当前环境缺少消息类型库的话题会明确列出，场景录制时跳过（例如这台 NX 的 `/nav_lite/start_cmd`）；显式 `--topic` 指定不可用类型时返回错误。录制默认智航版使用 compute、标准版使用 body，`--board` 可覆盖。
 
 普通拉取输出仅显示保存位置、文件数量/大小、校验和必要提示；完整证据保留在采集清单与 `--json`。菜单中输入 q 正常取消，不作为错误报告。
 
@@ -139,15 +139,12 @@ sudo apt remove zephyr-zs-support
 
 卸载注销 zt（失败不影响卸载），保留用户配置、会话与采集数据。
 
-## 开发与验收
+## 构建与发布校验
 
 ```bash
-PYTHONPATH=src python3 -m unittest discover -s tests -v
 python3 scripts/build_deb.py
 python3 scripts/verify_package.py
 python3 -m pip wheel . --no-deps -w dist
 ```
 
-服务层与 UI 分离，远程 Linux helper 仅使用标准库，传输定义在 `transports.Transport`。`TaskControl` 提供进度事件与取消信号，供后续后台 GUI 复用。
-
-[开发记录与验收边界](docs/开发验收记录.md) · [产品适配矩阵](docs/产品适配矩阵.md) · [开发计划](开发计划.md)
+Deb 构建需要 `dpkg-deb`；发布校验需要前述运行依赖及 Bash 补全。生成文件位于 `dist/`，包含 Debian 安装包和 Python wheel。

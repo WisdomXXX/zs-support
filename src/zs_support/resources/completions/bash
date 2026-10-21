@@ -1,0 +1,46 @@
+# zs-support Bash completion: only local metadata; never contacts a robot.
+_zs_support() {
+    local cur prev word product="" i
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    for ((i=1; i<COMP_CWORD; i++)); do
+        if [[ ${COMP_WORDS[i]} == --product ]]; then product="${COMP_WORDS[i+1]}"; fi
+    done
+    case "$prev" in
+        --product) COMPREPLY=( $(compgen -W 'zsl1 zsl2 zsm1' -- "$cur") ); return ;;
+        --board) COMPREPLY=( $(compgen -W 'body compute' -- "$cur") ); return ;;
+        --scene)
+            local -a query=(__complete scenes)
+            [[ -n $product ]] && query+=(--product "$product")
+            COMPREPLY=( $(compgen -W "$(zs-support "${query[@]}" 2>/dev/null)" -- "$cur") ); return ;;
+        --session) COMPREPLY=( $(compgen -W "$(zs-support __complete sessions 2>/dev/null)" -- "$cur") ); return ;;
+        --output) mapfile -t COMPREPLY < <(compgen -f -- "$cur"); compopt -o filenames 2>/dev/null; return ;;
+        --algorithm) COMPREPLY=( $(compgen -W 'standard navigation' -- "$cur") ); return ;;
+        --storage) COMPREPLY=( $(compgen -W 'sqlite3 mcap' -- "$cur") ); return ;;
+        --kinds) COMPREPLY=( $(compgen -W 'bag log map' -- "$cur") ); return ;;
+        pull) if [[ $cur != -* ]]; then COMPREPLY=( $(compgen -W 'last bag log map all' -- "$cur") ); return; fi ;;
+        completion) COMPREPLY=( $(compgen -W 'bash zsh' -- "$cur") ); return ;;
+        --remote-path|--log-script|--ros-setup|--qos|--select|--topic|--exclude-topic|--body-host|--compute-host|--interface) return ;;
+    esac
+    if [[ $cur == -* ]]; then
+        local flags='--help --json --verbose --non-interactive'
+        case " ${COMP_WORDS[*]} " in
+            *' rec '*|*' bag '*) flags+=' --product --board --scene --topic --exclude-topic --storage --qos --ros-setup --remote-path --min-free-bytes --list --duration --background' ;;
+            *' connect '*) flags+=' --product --body-host --compute-host --body-only --algorithm --fast --interface' ;;
+            *' status '*) flags+=' --product --session --local --all' ;;
+            *' stop '*) flags+=' --product --session' ;;
+            *' pull '*) flags+=' --product --board --session --output --hash --remote-path --save-path --list --all --select --log-script --kinds' ;;
+            *' map '*) flags+=' --product --board --remote-path --output --hash --save-path --list --all --select' ;;
+            *' log '*) flags+=' --product --board --remote-path --output --hash --save-path --log-script' ;;
+            *' collect '*) flags+=' --product --board --remote-path --output --hash --save-path --log-script --kinds' ;;
+            *' doctor '*) flags+=' --connect' ;;
+            *' info '*) flags+=' --product' ;;
+            *) flags+=' --version' ;;
+        esac
+        COMPREPLY=( $(compgen -W "$flags" -- "$cur") )
+    else
+        COMPREPLY=( $(compgen -W 'connect info bag status stop pull doctor completion' -- "$cur") )
+    fi
+}
+complete -F _zs_support zs-support

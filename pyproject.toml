@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=65", "wheel>=0.38", "packaging>=24"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zs-support"
+dynamic = ["version"]
+description = "智身科技售后运维采集工具"
+requires-python = ">=3.10"
+dependencies = ["PyYAML>=5.4"]
+
+[project.scripts]
+zs-support = "zs_support.cli:main"
+
+[tool.setuptools.dynamic]
+version = {file = "VERSION"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+zs_support = ["resources/products/*.json", "resources/topics/*.json", "resources/completions/*", "resources/VERSION"]

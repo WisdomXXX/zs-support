@@ -1,0 +1,4 @@
+include VERSION
+include README.md
+include CHANGELOG.md
+recursive-include src/zs_support/resources *.json VERSION bash zsh

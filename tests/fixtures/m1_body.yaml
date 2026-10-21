@@ -1,0 +1,46 @@
+version: 0.3.3
+description: A2503 RK3588 Released Image with all modules
+modules:
+  kernel:
+    name: Linux Kernel
+    tag: v0.1.6
+  rootfs:
+    name: Root Filesystem
+    tag: v0.0.7
+  packages:
+  - name: robot-runtime
+    tag: v0.2.3
+  - name: zsibot_common
+    tag: v0.6.2
+  - name: robot-launch
+    tag: v0.1.5-r2
+  - name: robot-ws
+    tag: v0.5.0
+  - name: motion-control
+    tag: v0.6.3
+  - name: Robots Dog Msgs
+    tag: v0.8.2
+  - name: perception_track
+    tag: v0.6.3-r2
+mcu_firmware:
+- name: uart2canfd
+  tag: v1.0.3
+- name: power_board
+  tag: v1.0.5
+- name: hot_swap_board
+  tag: v0.2.5
+- name: imu_board
+  tag: v1.0.3
+- name: w190s
+  tag: v1.0.7
+- name: p85max
+  tag: v1.0.8
+- name: battery_bin
+  tag: v1.0.28
+ota_tools:
+  name: OTA Tools
+  tag: v0.0.4
+build_info:
+  build_date: 2026-08-27 23:31:18 +0800
+  build_host: zsxc-virtual-machine
+  maintainer: Jenkins

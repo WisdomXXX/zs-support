@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+if [ "$1" = configure ] && command -v zt >/dev/null 2>&1; then
+    zt register --name zs-support --package zephyr-zs-support \
+        --command zs-support --version '@VERSION@' \
+        --description 'ZhiShen robot support data collector' \
+        --category robotics --binary /usr/bin/zs-support || \
+        echo '警告：zt 注册失败，工具已安装，可稍后重新注册。' >&2
+fi
+exit 0

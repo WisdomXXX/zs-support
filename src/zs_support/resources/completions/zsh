@@ -1,0 +1,44 @@
+#compdef zs-support
+# Local completion only; remote data uses command-internal selection.
+_zs_support() {
+    local -a commands scenes sessions
+    local context state state_descr line
+    typeset -A opt_args
+    commands=('connect:选择产品并连接' 'info:刷新版本与SN' 'bag:录制Bag，Ctrl+C保存'
+              'status:查看录制状态' 'stop:停止后台录制' 'pull:拉取录包、日志或地图'
+              'doctor:检查依赖与连接' 'completion:输出Shell补全')
+    local product="" i
+    for ((i=1; i<=$#words; i++)); do
+        [[ $words[i] == --product ]] && product=$words[i+1]
+    done
+    local -a query=(__complete scenes)
+    [[ -n $product ]] && query+=(--product "$product")
+    scenes=("${(@f)$(zs-support $query 2>/dev/null)}")
+    sessions=("${(@f)$(zs-support __complete sessions 2>/dev/null)}")
+    _arguments -s \
+        '--help[帮助]' '--version[版本]' '--json[JSON输出]' '--verbose[详细信息]' '--non-interactive[无交互]' \
+        '--product[产品]:产品:(zsl1 zsl2 zsm1)' '--board[板卡]:板卡:(body compute)' \
+        '--body-host[本体地址]:地址:' '--compute-host[算力板地址]:地址:' '--body-only[仅本体]' '--fast[高速入口]' \
+        '--algorithm[人工算法配置]:算法:(standard navigation)' \
+        '*--scene[场景]:场景:($scenes)' '*--topic[增加Topic]:Topic:' '*--exclude-topic[移除Topic]:Topic:' \
+        '--session[会话ID]:会话:($sessions)' '--output[本地下载目录]:目录:_files -/' \
+        '--remote-path[远端完整路径]:路径:' '--storage[存储插件]:插件:(sqlite3 mcap)' \
+        '--ros-setup[ROS环境脚本]:路径:' '--qos[远端QoS配置]:路径:' '--log-script[M1日志脚本]:路径:' \
+        '--min-free-bytes[最低剩余空间]:字节:' '--hash[SHA256校验]' '--save-path[保存路径覆盖]' \
+        '--duration[定时录制秒数]:秒:' '--background[显式后台录制]' '--interface[机器人网卡]:网卡:' \
+        '--list[列举候选]' '--all[全部拉取或全部历史]' '*--select[选择完整路径]:路径:' \
+        '--local[只读本地状态]' '--connect[诊断连接]' '--kinds[组合类型]:类型:(bag log map)' \
+        '1:命令:->command' '*:参数:->args'
+    case $state in
+        command) _describe '命令' commands ;;
+        args)
+            [[ $words[2] == completion ]] && compadd bash zsh
+            [[ $words[2] == pull && CURRENT == 3 ]] && compadd last bag log map all
+            ;;
+    esac
+}
+if [[ ${funcstack[1]} == _zs-support ]]; then
+    _zs_support "$@"
+else
+    compdef _zs_support zs-support
+fi

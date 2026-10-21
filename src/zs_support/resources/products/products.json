@@ -1,0 +1,226 @@
+{
+  "zsl1": {
+    "label": "ZSL-1/1W",
+    "aliases": [
+      "xg",
+      "小狗",
+      "l1",
+      "l1w",
+      "zsl1w",
+      "zsl-1",
+      "zsl-1w"
+    ],
+    "release_prefixes": [
+      "602",
+      "622"
+    ],
+    "boards": {
+      "body": {
+        "user": "firefly",
+        "password": "firefly",
+        "hosts": [
+          "192.168.234.1"
+        ],
+        "version_path": "/opt/release/version.yaml",
+        "ros_setups": [],
+        "ros_overlays": [
+          "/opt/robot/robot_nav/install/setup.bash"
+        ],
+        "log_scripts": [],
+        "paths": {
+          "bag": [
+            "~/Downloads/zs-support/bags",
+            "~"
+          ],
+          "log": [
+            "/tmp/log/alg_data"
+          ],
+          "map": [
+            "/ota/alg_data/map"
+          ]
+        },
+        "log_extra": []
+      },
+      "compute": {
+        "user": "robot",
+        "password": "1",
+        "hosts": [
+          "192.168.234.234"
+        ],
+        "version_path": "/opt/release/version.yaml",
+        "ros_setups": [],
+        "ros_overlays": [
+          "/opt/robot/robot_nav/install/setup.bash"
+        ],
+        "log_scripts": [],
+        "paths": {
+          "bag": [
+            "~/Downloads/zs-support/bags",
+            "~"
+          ],
+          "log": [
+            "/tmp/log/alg_data"
+          ],
+          "map": [
+            "/ota/alg_data/map"
+          ]
+        },
+        "log_extra": [
+          "/home/robot/.robot/log",
+          "/home/root/.robot/log"
+        ]
+      }
+    }
+  },
+  "zsl2": {
+    "label": "ZSL2",
+    "aliases": [
+      "xg-l2",
+      "xgl2",
+      "l2",
+      "小狗二代",
+      "zs-l2"
+    ],
+    "release_prefixes": [
+      "602",
+      "622"
+    ],
+    "boards": {
+      "body": {
+        "user": "robot",
+        "password": "bot",
+        "hosts": [
+          "192.168.168.168",
+          "192.168.234.1"
+        ],
+        "version_path": "/opt/release/version.yaml",
+        "ros_setups": [],
+        "ros_overlays": [
+          "/opt/robot/robot_nav/install/setup.bash"
+        ],
+        "log_scripts": [],
+        "paths": {
+          "bag": [
+            "~/Downloads/zs-support/bags",
+            "~"
+          ],
+          "log": [
+            "/home/robot/robot_launch_log"
+          ],
+          "map": [
+            "/userdata/alg_data/map",
+            "/ota/alg_data/map"
+          ]
+        },
+        "log_extra": []
+      },
+      "compute": {
+        "user": "robot",
+        "password": "1",
+        "hosts": [
+          "192.168.168.100"
+        ],
+        "version_path": "/opt/release/version.yaml",
+        "ros_setups": [],
+        "ros_overlays": [
+          "/opt/robot/robot_nav/install/setup.bash"
+        ],
+        "log_scripts": [],
+        "paths": {
+          "bag": [
+            "~/Downloads/zs-support/bags",
+            "/opt/data",
+            "/home/robot/bags",
+            "~"
+          ],
+          "log": [
+            "/home/robot/robot_launch_log"
+          ],
+          "map": [
+            "/userdata/alg_data/map",
+            "/ota/alg_data/map"
+          ]
+        },
+        "log_extra": [],
+        "fast_host": "192.168.144.100"
+      }
+    }
+  },
+  "zsm1": {
+    "label": "ZSM1",
+    "aliases": [
+      "zg",
+      "中狗",
+      "m1",
+      "zsm-1"
+    ],
+    "release_prefixes": [
+      "602",
+      "622"
+    ],
+    "boards": {
+      "body": {
+        "user": "robot",
+        "password": "bot",
+        "hosts": [
+          "192.168.168.168",
+          "192.168.234.1"
+        ],
+        "version_path": "/opt/release/version.yaml",
+        "ros_setups": [],
+        "ros_overlays": [
+          "/opt/robot/robot_nav/install/setup.bash"
+        ],
+        "log_scripts": [
+          "/opt/runtime/bin/get_robot_log.sh"
+        ],
+        "paths": {
+          "bag": [
+            "~/Downloads/zs-support/bags",
+            "~"
+          ],
+          "log": [
+            "/home/robot/robot_launch_log",
+            "/tmp/log/alg_data",
+            "/userdata/log"
+          ],
+          "map": [
+            "/userdata/alg_data/map",
+            "/ota/alg_data/map"
+          ]
+        },
+        "log_extra": []
+      },
+      "compute": {
+        "user": "robot",
+        "password": "1",
+        "hosts": [
+          "192.168.168.100"
+        ],
+        "version_path": "/opt/release/version.yaml",
+        "ros_setups": [],
+        "ros_overlays": [
+          "/opt/robot/robot_nav/install/setup.bash"
+        ],
+        "log_scripts": [],
+        "paths": {
+          "bag": [
+            "~/Downloads/zs-support/bags",
+            "~"
+          ],
+          "log": [
+            "/home/robot/robot_launch_log",
+            "/tmp/log/alg_data"
+          ],
+          "map": [
+            "/userdata/alg_data/map",
+            "/ota/alg_data/map"
+          ]
+        },
+        "log_extra": [
+          "/tmp/log/alg_data"
+        ]
+      }
+    }
+  }
+}
